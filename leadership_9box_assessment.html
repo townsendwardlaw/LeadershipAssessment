@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadership 9-Box Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f13; --surface: #16181f; --surface2: #1e2029; --border: #2a2d38;
+    --gold: #c9a84c; --gold-light: #e8c97a; --text: #e8e9ee; --muted: #7a7f96;
+    --green: #4caf82; --yellow: #d4a843; --red: #c0504d; --accent: #5b8af5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+  header { border-bottom: 1px solid var(--border); padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; background: var(--surface); position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--gold); }
+  .logo span { color: var(--muted); font-size: 0.75rem; display: block; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+
+  #phase-intro, #phase-setup, #phase-questions, #phase-results { display: none; }
+  #phase-intro { display: block; }
+
+  .intro-container { max-width: 720px; margin: 64px auto; padding: 0 40px; text-align: center; }
+  .intro-container h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 700; line-height: 1.2; margin-bottom: 16px; background: linear-gradient(135deg, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .intro-container p { color: var(--muted); font-size: 0.98rem; max-width: 520px; margin: 0 auto 32px; }
+  .grid-preview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; max-width: 360px; margin: 0 auto 36px; }
+  .gp-cell { padding: 11px 7px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; text-align: center; text-transform: uppercase; }
+  .gp-green { background: rgba(76,175,130,0.15); border: 1px solid rgba(76,175,130,0.4); color: var(--green); }
+  .gp-yellow { background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.4); color: var(--yellow); }
+  .gp-red { background: rgba(192,80,77,0.12); border: 1px solid rgba(192,80,77,0.4); color: var(--red); }
+  .intro-pillars { display: flex; gap: 14px; max-width: 560px; margin: 0 auto 36px; }
+  .pillar { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 15px; flex: 1; text-align: left; }
+  .pillar-num { font-size: 0.65rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .pillar-title { font-size: 0.83rem; font-weight: 600; margin-bottom: 3px; }
+  .pillar-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+
+  .btn-primary { background: linear-gradient(135deg, var(--gold), #a07820); color: #0e0f13; border: none; padding: 14px 34px; font-family: 'DM Sans', sans-serif; font-size: 0.93rem; font-weight: 600; border-radius: 8px; cursor: pointer; letter-spacing: 0.5px; transition: opacity 0.2s, transform 0.15s; }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; transition: border-color 0.2s; }
+  .btn-secondary:hover { border-color: var(--gold); }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px 14px; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.15s; }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .setup-container { max-width: 600px; margin: 52px auto; padding: 0 40px; }
+  .setup-container h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; margin-bottom: 7px; }
+  .setup-container p { color: var(--muted); margin-bottom: 28px; font-size: 0.92rem; }
+  .leader-inputs { display: flex; flex-direction: column; gap: 9px; }
+  .leader-row { display: flex; gap: 9px; align-items: center; }
+  .leader-row input { flex: 1; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 11px 15px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; transition: border-color 0.2s; }
+  .leader-row input:focus { outline: none; border-color: var(--gold); }
+  .leader-row input::placeholder { color: var(--muted); }
+  .setup-actions { margin-top: 24px; display: flex; gap: 11px; }
+
+  .q-container { max-width: 680px; margin: 0 auto; padding: 32px 40px 56px; }
+  .q-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .q-person { display: flex; align-items: center; gap: 13px; }
+  .q-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #7a5010); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #0e0f13; font-weight: 700; }
+  .q-person-name { font-size: 1.05rem; font-weight: 600; }
+  .q-person-sub { font-size: 0.76rem; color: var(--muted); }
+  .q-progress { text-align: right; }
+  .q-progress-bar { width: 160px; height: 3px; background: var(--border); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+  .q-progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s ease; }
+  .q-progress-text { font-size: 0.75rem; color: var(--muted); }
+
+  .tier-banner { background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 8px; padding: 13px 17px; margin-bottom: 26px; }
+  .tier-banner-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 3px; }
+  .tier-banner-desc { font-size: 0.83rem; color: var(--muted); }
+
+  .deep-dive-banner { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(201,168,76,0.02)); border: 1px solid rgba(201,168,76,0.22); border-radius: 9px; padding: 18px 20px; margin-bottom: 26px; }
+  .ddu-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 5px; }
+  .ddu-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.5; }
+
+  .q-section-label { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 16px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+  .question-block { margin-bottom: 28px; }
+  .question-text { font-size: 0.94rem; font-weight: 500; margin-bottom: 10px; line-height: 1.55; }
+  .question-context { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; font-style: italic; }
+
+  .anchor-row { display: flex; flex-direction: column; gap: 6px; }
+  .anchor-btn { width: 100%; text-align: left; padding: 11px 14px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 7px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.86rem; line-height: 1.4; transition: all 0.14s; display: flex; align-items: flex-start; gap: 9px; }
+  .anchor-btn:hover { border-color: var(--gold); color: var(--text); }
+  .anchor-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; margin-top: 2px; transition: all 0.14s; }
+  .anchor-btn.sel-1 { background: rgba(192,80,77,0.1); border-color: var(--red); color: #e08080; }
+  .anchor-btn.sel-1 .anchor-dot { background: var(--red); border-color: var(--red); }
+  .anchor-btn.sel-2 { background: rgba(180,100,50,0.08); border-color: #a07030; color: #c09050; }
+  .anchor-btn.sel-2 .anchor-dot { background: #a07030; border-color: #a07030; }
+  .anchor-btn.sel-3 { background: rgba(212,168,67,0.12); border-color: var(--yellow); color: var(--yellow); }
+  .anchor-btn.sel-3 .anchor-dot { background: var(--yellow); border-color: var(--yellow); }
+  .anchor-btn.sel-4 { background: rgba(76,175,130,0.1); border-color: var(--green); color: var(--green); }
+  .anchor-btn.sel-4 .anchor-dot { background: var(--green); border-color: var(--green); }
+
+  .open-text-area { width: 100%; min-height: 78px; padding: 13px 15px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; line-height: 1.5; resize: vertical; transition: border-color 0.2s; }
+  .open-text-area:focus { outline: none; border-color: var(--gold); }
+  .open-text-area::placeholder { color: var(--muted); }
+  .open-text-hint { font-size: 0.72rem; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+  .q-actions { display: flex; justify-content: space-between; margin-top: 20px; align-items: center; }
+
+  /* RESULTS */
+  .results-container { max-width: 1040px; margin: 0 auto; padding: 40px; }
+  .results-header { text-align: center; margin-bottom: 40px; }
+  .results-header h2 { font-family: 'Playfair Display', serif; font-size: 1.9rem; margin-bottom: 5px; }
+  .results-header p { color: var(--muted); }
+
+  .axis-wrap { position: relative; padding-left: 50px; }
+  .axis-label-y { position: absolute; left: 0; top: 50%; transform: translateY(-50%) rotate(-90deg); font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .axis-label-x { text-align: center; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 9px; }
+  .nine-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+  .nine-cell { border-radius: 8px; padding: 15px 13px; min-height: 105px; display: flex; flex-direction: column; }
+  .cell-green { background: rgba(76,175,130,0.08); border: 1.5px solid rgba(76,175,130,0.32); }
+  .cell-yellow { background: rgba(212,168,67,0.07); border: 1.5px solid rgba(212,168,67,0.28); }
+  .cell-red { background: rgba(192,80,77,0.08); border: 1.5px solid rgba(192,80,77,0.32); }
+  .cell-title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
+  .cell-green .cell-title { color: var(--green); }
+  .cell-yellow .cell-title { color: var(--yellow); }
+  .cell-red .cell-title { color: var(--red); }
+  .cell-desc { font-size: 0.65rem; color: var(--muted); line-height: 1.4; flex: 1; }
+  .cell-people { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 7px; }
+  .person-chip { background: rgba(201,168,76,0.16); border: 1px solid rgba(201,168,76,0.32); color: var(--gold-light); border-radius: 20px; padding: 2px 8px; font-size: 0.65rem; font-weight: 500; }
+
+  .leader-cards-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; margin: 40px 0 18px; }
+  .leader-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(295px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .leader-card { background: var(--surface); border: 1px solid var(--border); border-radius: 11px; padding: 20px; transition: border-color 0.2s; }
+  .leader-card:hover { border-color: rgba(201,168,76,0.35); }
+  .lc-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .lc-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: #0e0f13; flex-shrink: 0; }
+  .av-green { background: linear-gradient(135deg, var(--green), #2a7050); }
+  .av-yellow { background: linear-gradient(135deg, var(--yellow), #8a6010); }
+  .av-red { background: linear-gradient(135deg, #e07070, var(--red)); }
+  .lc-name { font-weight: 600; font-size: 0.95rem; }
+  .lc-box { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-top: 3px; }
+  .box-green { background: rgba(76,175,130,0.1); color: var(--green); border: 1px solid rgba(76,175,130,0.28); }
+  .box-yellow { background: rgba(212,168,67,0.1); color: var(--yellow); border: 1px solid rgba(212,168,67,0.28); }
+  .box-red { background: rgba(192,80,77,0.1); color: #e08080; border: 1px solid rgba(192,80,77,0.28); }
+
+  .lc-scores { display: flex; gap: 10px; margin-bottom: 14px; padding: 11px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .lc-score-item { text-align: center; flex: 1; }
+  .lc-score-val { font-size: 1.45rem; font-weight: 700; font-family: 'Playfair Display', serif; }
+  .score-perf { color: var(--accent); }
+  .score-pot { color: var(--gold); }
+  .lc-score-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .spotlight-wrap { position: relative; padding-left: 24px; margin-bottom: 14px; }
+  .spotlight-axis-y { position: absolute; left: 0; top: 50%; transform: translateY(-50%) rotate(-90deg); font-size: 0.53rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .spotlight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+  .spotlight-axis-x { text-align: center; font-size: 0.53rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+  .sp-cell { border-radius: 4px; padding: 5px 3px; text-align: center; font-size: 0.53rem; font-weight: 600; text-transform: uppercase; line-height: 1.3; min-height: 34px; display: flex; align-items: center; justify-content: center; }
+  .sp-cell.dimmed { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.09); }
+  .sp-cell.active-green { background: rgba(76,175,130,0.2); border: 2px solid var(--green); color: var(--green); box-shadow: 0 0 8px rgba(76,175,130,0.22); }
+  .sp-cell.active-yellow { background: rgba(212,168,67,0.16); border: 2px solid var(--yellow); color: var(--yellow); box-shadow: 0 0 8px rgba(212,168,67,0.18); }
+  .sp-cell.active-red { background: rgba(192,80,77,0.16); border: 2px solid var(--red); color: #e08080; box-shadow: 0 0 8px rgba(192,80,77,0.18); }
+
+  .lc-guidance { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin-bottom: 11px; }
+  .lc-actions-title { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text); margin-bottom: 7px; }
+  .lc-actions-list { list-style: none; }
+  .lc-actions-list li { font-size: 0.81rem; color: var(--muted); padding: 3px 0 3px 14px; position: relative; }
+  .lc-actions-list li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 0.75rem; }
+
+  .print-btn { display: block; margin: 0 auto 44px; background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.86rem; transition: all 0.2s; }
+  .print-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .restart-btn { display: block; text-align: center; background: none; border: none; color: var(--muted); font-size: 0.81rem; cursor: pointer; margin: 0 auto 36px; text-decoration: underline; }
+  .restart-btn:hover { color: var(--text); }
+
+  @media (max-width: 580px) {
+    header, .intro-container, .setup-container, .q-container, .results-container { padding-left: 18px; padding-right: 18px; }
+    .intro-container h1 { font-size: 1.85rem; }
+    .intro-pillars { flex-direction: column; }
+    .leader-cards { grid-template-columns: 1fr; }
+    .q-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Leadership Intelligence <span>9-Box Assessment · CEO Edition</span></div>
+  <div style="font-size:0.73rem;color:var(--muted);" id="header-status"></div>
+</header>
+
+<!-- INTRO -->
+<div id="phase-intro">
+  <div class="intro-container">
+    <h1>Executive Team Assessment</h1>
+    <p>A behavior-based evaluation framework that places each leader on the 9-box grid — with concrete placement logic, not gut feeling.</p>
+    <div class="grid-preview">
+      <div class="gp-cell gp-yellow">One to Watch</div><div class="gp-cell gp-green">Rising Star</div><div class="gp-cell gp-green">Next Gen Leader</div>
+      <div class="gp-cell gp-yellow">Dev. Needed</div><div class="gp-cell gp-green">Core Employee</div><div class="gp-cell gp-green">High Impact</div>
+      <div class="gp-cell gp-red">Time to Go</div><div class="gp-cell gp-yellow">Solid Contributor</div><div class="gp-cell gp-green">Subject Matter Expert</div>
+    </div>
+    <div class="intro-pillars">
+      <div class="pillar"><div class="pillar-num">Tier 1</div><div class="pillar-title">8 Knockout Questions</div><div class="pillar-desc">Behavioral anchors that force concrete judgment, not impressions.</div></div>
+      <div class="pillar"><div class="pillar-num">Tier 2</div><div class="pillar-title">Deep Dive (if needed)</div><div class="pillar-desc">Unlocks automatically when placement is ambiguous. Includes open reflection prompts.</div></div>
+      <div class="pillar"><div class="pillar-num">Output</div><div class="pillar-title">Grid + Guidance Cards</div><div class="pillar-desc">Visual placement with spotlight grid and 5 tailored actions per executive.</div></div>
+    </div>
+    <button class="btn-primary" onclick="showPhase('setup')">Begin Assessment →</button>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div id="phase-setup">
+  <div class="setup-container">
+    <h2>Who are you assessing?</h2>
+    <p>Enter the names of your direct reports or executive team members. You'll assess each person individually.</p>
+    <div class="leader-inputs" id="leader-inputs">
+      <div class="leader-row"><input type="text" placeholder="e.g. Sarah Chen – Chief Marketing Officer" /><button class="btn-ghost" onclick="removeRow(this)">×</button></div>
+      <div class="leader-row"><input type="text" placeholder="e.g. James Liu – VP of Engineering" /><button class="btn-ghost" onclick="removeRow(this)">×</button></div>
+      <div class="leader-row"><input type="text" placeholder="e.g. Maria Santos – CFO" /><button class="btn-ghost" onclick="removeRow(this)">×</button></div>
+    </div>
+    <div style="margin-top:11px;"><button class="btn-ghost" onclick="addRow()" style="font-size:0.82rem;padding:7px 13px;">+ Add person</button></div>
+    <div class="setup-actions">
+      <button class="btn-primary" onclick="startAssessment()">Start Assessments →</button>
+      <button class="btn-secondary" onclick="showPhase('intro')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div id="phase-questions">
+  <div class="q-container">
+    <div class="q-header">
+      <div class="q-person">
+        <div class="q-avatar" id="q-avatar">JL</div>
+        <div><div class="q-person-name" id="q-name">James Liu</div><div class="q-person-sub" id="q-sub">Person 1 of 3</div></div>
+      </div>
+      <div class="q-progress">
+        <div class="q-progress-text" id="q-prog-text">Tier 1 of 2</div>
+        <div class="q-progress-bar"><div class="q-progress-fill" id="q-prog-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- TIER 1 -->
+    <div id="tier1-section">
+      <div class="tier-banner">
+        <div class="tier-banner-title">Tier 1 — Knockout Assessment</div>
+        <div class="tier-banner-desc">8 high-signal questions. Choose the option that most accurately reflects observable behavior — not hope or potential.</div>
+      </div>
+
+      <div class="q-section-label">Performance &amp; Reliability</div>
+
+      <div class="question-block">
+        <div class="question-text">1. If this executive left tomorrow, what would immediately decline?</div>
+        <div class="question-context">This surfaces the real size of their footprint versus their title.</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_p1" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Very little — the team runs fine without them</button>
+          <button class="anchor-btn" data-q="t1_p1" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Some processes would slow temporarily, but recoverable quickly</button>
+          <button class="anchor-btn" data-q="t1_p1" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Several key outcomes and relationships would suffer noticeably</button>
+          <button class="anchor-btn" data-q="t1_p1" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Significant and immediate impact — they are genuinely load-bearing</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">2. Over the past 12 months, how consistently have they delivered on their commitments?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_p2" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Frequent misses — requires regular follow-up or intervention from me</button>
+          <button class="anchor-btn" data-q="t1_p2" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Inconsistent — hits some, misses others with no clear pattern</button>
+          <button class="anchor-btn" data-q="t1_p2" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Mostly reliable — occasional misses but generally trustworthy</button>
+          <button class="anchor-btn" data-q="t1_p2" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Highly reliable — their word carries real weight on this team</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">3. Do they solve problems, or do they generate problems for others to solve?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_p3" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Primarily generates problems — issues regularly escalate upward or sideways</button>
+          <button class="anchor-btn" data-q="t1_p3" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Mixed — handles some issues but frequently needs help resolving others</button>
+          <button class="anchor-btn" data-q="t1_p3" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Mostly solves — occasionally escalates but handles the majority independently</button>
+          <button class="anchor-btn" data-q="t1_p3" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Consistently solves — and often catches issues before they reach me</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">4. Would you confidently assign them a mission-critical initiative with real downside risk?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_p4" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>No — I would not trust the outcome without close, ongoing oversight</button>
+          <button class="anchor-btn" data-q="t1_p4" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Hesitant — I would assign it but monitor closely throughout</button>
+          <button class="anchor-btn" data-q="t1_p4" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Yes, with milestone check-ins and clear accountability</button>
+          <button class="anchor-btn" data-q="t1_p4" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Absolutely — this is exactly who I would give it to</button>
+        </div>
+      </div>
+
+      <div class="q-section-label" style="margin-top:30px;">Leadership Capacity &amp; Potential</div>
+
+      <div class="question-block">
+        <div class="question-text">5. When conditions change significantly, how do they respond?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_l1" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Clings to the previous approach — resists or avoids change</button>
+          <button class="anchor-btn" data-q="t1_l1" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Adapts eventually but requires time, reassurance, and direction</button>
+          <button class="anchor-btn" data-q="t1_l1" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Adjusts well and maintains effectiveness through transitions</button>
+          <button class="anchor-btn" data-q="t1_l1" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Thrives in change — recalibrates faster than the team around them</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">6. Do they develop the leaders beneath them, or remain the primary decision-maker?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_l2" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Bottleneck — most decisions flow through them, minimal real delegation</button>
+          <button class="anchor-btn" data-q="t1_l2" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Delegates tasks but retains most judgment and authority</button>
+          <button class="anchor-btn" data-q="t1_l2" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Actively develops their team — visible growth in people beneath them</button>
+          <button class="anchor-btn" data-q="t1_l2" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Builds leaders — their team could operate effectively without them</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">7. When they contribute to executive discussions, is it primarily strategic or operational?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_l3" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Mostly operational — status reports, metrics, and functional updates</button>
+          <button class="anchor-btn" data-q="t1_l3" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Occasional strategic input but defaults to operational framing</button>
+          <button class="anchor-btn" data-q="t1_l3" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Regularly contributes cross-functional perspective and strategic thinking</button>
+          <button class="anchor-btn" data-q="t1_l3" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Shapes our direction — brings insights that genuinely change how we think</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">8. Compared to 12 months ago, where is this executive?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t1_traj" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Declining — less effective, engaged, or capable than a year ago</button>
+          <button class="anchor-btn" data-q="t1_traj" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Plateaued — consistent but not visibly growing</button>
+          <button class="anchor-btn" data-q="t1_traj" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Improving — measurably more effective than a year ago</button>
+          <button class="anchor-btn" data-q="t1_traj" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Accelerating — significantly expanded capability and impact</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIER 2 -->
+    <div id="tier2-section" style="display:none;">
+      <div class="deep-dive-banner">
+        <div class="ddu-title">◆ Deep Dive Unlocked</div>
+        <div class="ddu-desc" id="ddu-reason">A few additional questions will sharpen the placement for this person.</div>
+      </div>
+
+      <div class="q-section-label">Organizational Impact</div>
+
+      <div class="question-block">
+        <div class="question-text">9. Does their presence raise the standard of the people around them?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t2_oi1" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>No — others perform at a lower level around them or visibly disengage</button>
+          <button class="anchor-btn" data-q="t2_oi1" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Neutral — doesn't raise or lower the bar in a noticeable way</button>
+          <button class="anchor-btn" data-q="t2_oi1" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Yes — people around them tend to perform at a higher level</button>
+          <button class="anchor-btn" data-q="t2_oi1" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Strongly yes — they are a cultural multiplier on the executive team</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">10. When there is ambiguity or confusion on the team, are they a source of clarity or noise?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t2_oi2" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Adds to confusion — their involvement often makes things more complicated</button>
+          <button class="anchor-btn" data-q="t2_oi2" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Neutral — neither helps nor hurts clarity meaningfully</button>
+          <button class="anchor-btn" data-q="t2_oi2" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Generally clarifying — people come to them when things are uncertain</button>
+          <button class="anchor-btn" data-q="t2_oi2" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>A stabilizing force — their presence consistently calms and aligns the team</button>
+        </div>
+      </div>
+
+      <div class="q-section-label" style="margin-top:26px;">Risk Signals</div>
+
+      <div class="question-block">
+        <div class="question-text">11. Where do you find yourself compensating for their limitations?</div>
+        <div class="question-context">Be direct. Your answer will not appear in the output — it informs the scoring only.</div>
+        <textarea class="open-text-area" data-q="t2_risk1" oninput="openText(this)" placeholder="e.g. I regularly reframe their decisions before they reach the board. Or: I don't — they handle their domain cleanly."></textarea>
+        <div class="open-text-hint">This response influences placement silently. It will not appear in results.</div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">12. If the company doubled in size over the next three years, would this executive still belong on the leadership team?</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t2_risk2" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>No — the organization would outgrow them significantly</button>
+          <button class="anchor-btn" data-q="t2_risk2" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Unlikely — they would struggle considerably at that scale</button>
+          <button class="anchor-btn" data-q="t2_risk2" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Possibly — with meaningful development and the right support</button>
+          <button class="anchor-btn" data-q="t2_risk2" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Yes — they would scale with the company or ahead of it</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">13. Are you retaining this executive because of the value they deliver, or because replacing them feels difficult?</div>
+        <div class="question-context">One of the most important questions a CEO can ask about any member of their leadership team.</div>
+        <div class="anchor-row">
+          <button class="anchor-btn" data-q="t2_risk3" data-v="1" onclick="anchor(this)"><span class="anchor-dot"></span>Honestly — primarily because replacing them feels too costly or disruptive</button>
+          <button class="anchor-btn" data-q="t2_risk3" data-v="2" onclick="anchor(this)"><span class="anchor-dot"></span>Mixed — some real value, but inertia plays a meaningful role</button>
+          <button class="anchor-btn" data-q="t2_risk3" data-v="3" onclick="anchor(this)"><span class="anchor-dot"></span>Primarily for value — though I have noticed some drift recently</button>
+          <button class="anchor-btn" data-q="t2_risk3" data-v="4" onclick="anchor(this)"><span class="anchor-dot"></span>Entirely for value — I would re-hire this person today without hesitation</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-actions">
+      <button class="btn-secondary" id="q-back-btn" onclick="prevPerson()">← Previous</button>
+      <button class="btn-primary" id="q-next-btn" onclick="nextPerson()">Next Person →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="phase-results">
+  <div class="results-container">
+    <div class="results-header">
+      <h2>Executive Team Assessment</h2>
+      <p>Placement, scores, and recommended actions for each leader</p>
+    </div>
+    <div class="axis-wrap">
+      <div class="axis-label-y">Potential ↑</div>
+      <div class="nine-box" id="nine-box-grid"></div>
+      <div class="axis-label-x">Performance →</div>
+    </div>
+    <div class="leader-cards-title">Individual Profiles &amp; Guidance</div>
+    <div class="leader-cards" id="leader-cards"></div>
+    <button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+    <button class="restart-btn" onclick="restart()">Start a new assessment</button>
+  </div>
+</div>
+
+<script>
+const BOXES = [
+  { id:'one-to-watch',  title:'One to Watch',         desc:'High investment value for medium term — needs time to develop performance',              color:'yellow', row:0, col:0 },
+  { id:'rising-star',   title:'Rising Star',           desc:'Consistent performer with capability to develop and improve at a fast pace',             color:'green',  row:0, col:1 },
+  { id:'next-gen',      title:'Next Gen Leader',       desc:'Role model — can take on new challenges to deliver exceptional value',                   color:'green',  row:0, col:2 },
+  { id:'dev-needed',    title:'Development Needed',    desc:'Performance not where it needs to be, but potentially coachable/developable',            color:'yellow', row:1, col:0 },
+  { id:'core-employee', title:'Core Employee',         desc:'Consistent performer with capability to deliver higher performance and continued growth', color:'green',  row:1, col:1 },
+  { id:'high-impact',   title:'High Impact',           desc:'Excellent performance attributes with the ability to be stretched further',              color:'green',  row:1, col:2 },
+  { id:'time-to-go',    title:'Time to Go',            desc:'Low performance and limited growth potential — action required',                         color:'red',    row:2, col:0 },
+  { id:'solid-contrib', title:'Solid Contributor',     desc:'Solid performer with little growth potential — adds adequate value for now',             color:'yellow', row:2, col:1 },
+  { id:'sme',           title:'Subject Matter Expert', desc:'High value deliverer but with little growth potential',                                  color:'green',  row:2, col:2 },
+];
+
+const GUIDANCE = {
+  'next-gen':      { summary:'Your highest-value leadership asset. This person is operating at or above their level and is a critical retention priority. They represent the future of this organization.', actions:['Assign to the most strategic, high-stakes initiatives immediately','Build a personalized succession plan — they are your future senior leadership','Check in frequently: high performers leave when under-challenged','Consider expanding scope or title to formally signal recognition','Introduce to board, investors, and key external networks'] },
+  'rising-star':   { summary:'A standout with a clear upward trajectory. Their high potential is already being unlocked — invest here for outsized returns and protect them from being consumed by day-to-day operations.', actions:['Accelerate development with meaningful stretch assignments','Pair with a senior mentor or external executive coach','Expose to cross-functional leadership opportunities','Build a joint 12-month development roadmap together','Create visibility for their work at the board or senior leadership level'] },
+  'high-impact':   { summary:'Delivers at an excellent level today. The ceiling may be higher than it currently appears — one well-designed challenge could unlock the next tier of contribution.', actions:['Assign one significant stretch initiative outside their current functional domain','Provide coaching to develop broader strategic thinking and executive presence','Increase their visibility with the board or full executive team','Explore whether a larger scope would unlock greater potential','Retain carefully — this person is attractive to competitors and external recruiters'] },
+  'one-to-watch':  { summary:'High potential that has not yet translated into consistent performance. With the right environment and deliberate support, this person could become a future standout on your team.', actions:['Identify and remove obstacles to performance — is it role clarity, resources, or fit?','Set clear short-term milestones with structured coaching support','Avoid benign neglect — they need engaged, consistent leadership','Revisit placement formally in 90 days with explicit criteria for improvement','Consider whether they are in the wrong role rather than the wrong organization'] },
+  'core-employee': { summary:'The organizational backbone. Reliable, capable, and trustworthy — the steady performers every executive team depends on. Do not allow them to feel invisible beside higher-profile peers.', actions:['Ensure they feel genuinely valued — name their specific contributions explicitly','Offer meaningful development without forcing paths they do not want','Deploy as stabilizers during periods of rapid change or uncertainty','Recognize contributions publicly and specifically, not generically','Test for untapped potential with one meaningful stretch opportunity'] },
+  'dev-needed':    { summary:'There is coachable potential here, but current performance is not at the required level. This person needs active investment, clear direction, and an honest conversation — soon.', actions:['Initiate a structured, direct development conversation immediately','Set measurable 90-day performance milestones together — not imposed, agreed','Assign a coach or senior internal mentor with relevant experience','Diagnose whether the gap is skill, will, or circumstance before deciding next steps','If no material change in 3–6 months, begin a thoughtful and planned transition process'] },
+  'solid-contrib': { summary:'Reliable and adequate — a solid performer who adds real value today. Growth into broader leadership is unlikely. Manage and retain honestly, without over-investing or over-promising.', actions:['Be clear-eyed about the ceiling — avoid expensive development investment with low return','Keep them engaged and motivated within their current scope','Use their reliability as a foundation during periods of team flux','Do not promote into roles that require capabilities they do not have or want','Plan succession for their role — their institutional knowledge is the primary risk when they leave'] },
+  'sme':           { summary:'Deep domain expertise with genuine current value — but limited growth potential in leadership. Maximize their contribution exactly where they are and build a knowledge succession plan now.', actions:['Leverage their expertise as a primary internal resource and knowledge-sharer','Build specialist recognition tracks that reward depth, not just hierarchy','Do not force them into management if it is not a natural or desired fit','Retain through recognition of technical excellence, not title inflation','Begin documenting and transferring institutional knowledge — it walks out when they do'] },
+  'time-to-go':    { summary:'This is a difficult but necessary signal. Low performance and low trajectory is a clear pattern — inaction is itself a decision, and it is costly to the people around them.', actions:['Have a direct, private, and compassionate conversation about what you are observing','Offer one structured, time-boxed improvement opportunity with explicit and measurable criteria','Do not allow the situation to persist — it signals that underperformance is tolerated here','If no material improvement emerges, begin a respectful and well-planned transition','Examine how this mismatch occurred — what does it reveal about your hiring or onboarding process?'] },
+};
+
+let leaders=[], scores={}, currentIdx=0, tier2Active=false;
+const T1_PERF=['t1_p1','t1_p2','t1_p3','t1_p4'];
+const T1_LEAD=['t1_l1','t1_l2','t1_l3'];
+const T1_TRAJ=['t1_traj'];
+const T2_OI=['t2_oi1','t2_oi2'];
+const T2_RISK=['t2_risk2','t2_risk3'];
+
+function showPhase(p){['intro','setup','questions','results'].forEach(id=>{document.getElementById('phase-'+id).style.display=(id===p)?'block':'none';});}
+function addRow(){const c=document.getElementById('leader-inputs');const r=document.createElement('div');r.className='leader-row';r.innerHTML='<input type="text" placeholder="Name – Title" /><button class="btn-ghost" onclick="removeRow(this)">×</button>';c.appendChild(r);}
+function removeRow(b){if(document.querySelectorAll('.leader-row').length>1)b.closest('.leader-row').remove();}
+
+function startAssessment(){
+  const inputs=document.querySelectorAll('#leader-inputs input');
+  leaders=[];inputs.forEach(i=>{if(i.value.trim())leaders.push(i.value.trim());});
+  if(!leaders.length){alert('Please enter at least one person.');return;}
+  leaders.forEach(l=>{scores[l]={};});
+  currentIdx=0;loadPerson(0);showPhase('questions');
+}
+
+function loadPerson(idx){
+  const name=leaders[idx];
+  const ini=name.split(/[\s\u2013\-]+/).filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('q-avatar').textContent=ini;
+  document.getElementById('q-name').textContent=name;
+  document.getElementById('q-sub').textContent=`Person ${idx+1} of ${leaders.length}`;
+  document.getElementById('header-status').textContent=`Assessing ${idx+1} of ${leaders.length}`;
+  const t2=scores[name]._tier2===true;
+  showTier2(t2);
+  document.querySelectorAll('.anchor-btn').forEach(btn=>{
+    btn.className='anchor-btn';
+    const q=btn.dataset.q,v=parseInt(btn.dataset.v);
+    if(scores[name][q]===v)btn.classList.add('sel-'+v);
+  });
+  document.querySelectorAll('.open-text-area').forEach(ta=>{ta.value=scores[name][ta.dataset.q]||'';});
+  document.getElementById('q-prog-fill').style.width=`${(idx/leaders.length)*100}%`;
+  document.getElementById('q-prog-text').textContent=t2?'Tier 1 + Deep Dive':'Tier 1 of 2';
+  document.getElementById('q-back-btn').style.visibility=idx===0?'hidden':'visible';
+  document.getElementById('q-next-btn').textContent=idx===leaders.length-1?'See Results →':'Next Person →';
+}
+
+function showTier2(show){
+  tier2Active=show;
+  document.getElementById('tier2-section').style.display=show?'block':'none';
+  document.getElementById('q-prog-text').textContent=show?'Tier 1 + Deep Dive':'Tier 1 of 2';
+}
+
+function anchor(btn){
+  const q=btn.dataset.q,v=parseInt(btn.dataset.v),name=leaders[currentIdx];
+  scores[name][q]=v;
+  document.querySelectorAll(`.anchor-btn[data-q="${q}"]`).forEach(b=>b.className='anchor-btn');
+  btn.classList.add('sel-'+v);
+}
+function openText(ta){scores[leaders[currentIdx]][ta.dataset.q]=ta.value;}
+
+function scoreOpenText(text){
+  if(!text||text.trim().length<8)return 3;
+  const t=text.toLowerCase();
+  const red=['always ','constantly','regularly compensat','every meeting','never trust','have to redo','have to fix','before it reaches','before the board','before presenting','reframe their','clean up their','catch their','undo their','correct their'];
+  const grn=["don't","do not","rarely","no issues","no concerns","minimal","nothing major","trust them","handles it","clean domain","nothing significant","i don't compensate","i do not compensate"];
+  const rc=red.filter(f=>t.includes(f)).length;
+  const gc=grn.filter(f=>t.includes(f)).length;
+  if(rc>=2)return 1;
+  if(rc===1&&gc===0)return 2;
+  if(gc>=1&&rc===0)return 4;
+  return 3;
+}
+
+function computeScores(name){
+  const s=scores[name];
+  const perfRaw=T1_PERF.reduce((sum,k)=>sum+(s[k]||0),0)/T1_PERF.length;
+  const perf=(perfRaw/4)*5;
+  const leadRaw=T1_LEAD.reduce((sum,k)=>sum+(s[k]||0),0)/T1_LEAD.length;
+  const trajRaw=s['t1_traj']||0;
+  let pot=((leadRaw*0.6+trajRaw*0.4)/4)*5;
+  if(s._tier2){
+    const oiRaw=T2_OI.reduce((sum,k)=>sum+(s[k]||0),0)/T2_OI.length;
+    const riskAnchor=T2_RISK.reduce((sum,k)=>sum+(s[k]||0),0)/T2_RISK.length;
+    const riskText=scoreOpenText(s['t2_risk1']||'');
+    const riskScore=(riskAnchor*0.7+riskText*0.3)/4*5;
+    pot=pot*0.7+(oiRaw/4*5)*0.3;
+    if(riskScore<2.5){const drag=(2.5-riskScore)*0.3;pot=Math.max(1,pot-drag);}
+  }
+  return{perf:Math.min(5,Math.max(1,Math.round(perf*10)/10)),pot:Math.min(5,Math.max(1,Math.round(pot*10)/10))};
+}
+
+function classify(perf,pot){
+  const pc=perf<=2.5?0:perf<=3.8?1:2;
+  const potc=pot<=2.5?2:pot<=3.8?1:0;
+  const b=BOXES.find(b=>b.row===potc&&b.col===pc);
+  return b?b.id:'core-employee';
+}
+
+function needsDeepDive(name){
+  const{perf,pot}=computeScores(name);
+  return(perf>2.1&&perf<3.1)||(perf>3.4&&perf<4.3)||(pot>2.1&&pot<3.1)||(pot>3.4&&pot<4.3)||perf<2.6||pot<2.6;
+}
+
+function nextPerson(){
+  const name=leaders[currentIdx];
+  const t1Keys=[...T1_PERF,...T1_LEAD,...T1_TRAJ];
+  if(t1Keys.some(k=>!scores[name][k])){alert('Please answer all Tier 1 questions before continuing.');return;}
+  if(tier2Active){
+    if(T2_OI.concat(T2_RISK).some(k=>!scores[name][k])){alert('Please answer all Deep Dive questions before continuing.');return;}
+    scores[name]._tier2=true;
+  } else if(needsDeepDive(name)){
+    scores[name]._tier2=true;
+    const{perf,pot}=computeScores(name);
+    let reason='A few additional questions will sharpen the placement for this person. Take a moment — these require honest reflection.';
+    if(perf<2.6||pot<2.6)reason='Some responses indicate concerns that warrant a closer look. These questions will help ensure the placement — and the guidance — is accurate and useful.';
+    else reason='Responses so far place this person near a boundary on the grid. A few more targeted questions will give you a clearer and more confident result.';
+    document.getElementById('ddu-reason').textContent=reason;
+    showTier2(true);window.scrollTo({top:0,behavior:'smooth'});return;
+  }
+  if(currentIdx<leaders.length-1){currentIdx++;loadPerson(currentIdx);window.scrollTo({top:0,behavior:'smooth'});}
+  else showResults();
+}
+
+function prevPerson(){
+  if(tier2Active){showTier2(false);return;}
+  if(currentIdx>0){currentIdx--;loadPerson(currentIdx);window.scrollTo({top:0,behavior:'smooth'});}
+}
+
+function showResults(){
+  showPhase('results');
+  document.getElementById('header-status').textContent='Assessment Complete';
+  const grid=document.getElementById('nine-box-grid');
+  grid.innerHTML='';
+  const cp={};BOXES.forEach(b=>cp[b.id]=[]);
+  leaders.forEach(name=>{const{perf,pot}=computeScores(name);cp[classify(perf,pot)].push(name);});
+  BOXES.forEach(b=>{
+    const cell=document.createElement('div');cell.className=`nine-cell cell-${b.color}`;
+    const ppl=cp[b.id].map(n=>`<span class="person-chip">${n.split(/[\s\u2013\-]/)[0]}</span>`).join('');
+    cell.innerHTML=`<div class="cell-title">${b.title}</div><div class="cell-desc">${b.desc}</div><div class="cell-people">${ppl}</div>`;
+    grid.appendChild(cell);
+  });
+  const cards=document.getElementById('leader-cards');cards.innerHTML='';
+  leaders.forEach(name=>{
+    const{perf,pot}=computeScores(name);
+    const boxId=classify(perf,pot);
+    const box=BOXES.find(b=>b.id===boxId);
+    const g=GUIDANCE[boxId];
+    const ini=name.split(/[\s\u2013\-]+/).filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const avC=box.color==='green'?'av-green':box.color==='yellow'?'av-yellow':'av-red';
+    const bxC=box.color==='green'?'box-green':box.color==='yellow'?'box-yellow':'box-red';
+    const t2badge=scores[name]._tier2?'<span style="font-size:0.62rem;color:var(--muted);margin-left:5px;">Deep Dive</span>':'';
+    cards.innerHTML+=`
+      <div class="leader-card">
+        <div class="lc-top">
+          <div class="lc-avatar ${avC}">${ini}</div>
+          <div><div class="lc-name">${name}</div><span class="lc-box ${bxC}">${box.title}</span>${t2badge}</div>
+        </div>
+        <div class="lc-scores">
+          <div class="lc-score-item"><div class="lc-score-val score-perf">${perf}</div><div class="lc-score-label">Performance</div></div>
+          <div class="lc-score-item"><div class="lc-score-val score-pot">${pot}</div><div class="lc-score-label">Potential</div></div>
+          <div class="lc-score-item"><div class="lc-score-val" style="color:var(--text);font-size:0.88rem;margin-top:7px;">${box.title}</div><div class="lc-score-label">Category</div></div>
+        </div>
+        ${buildSpotlight(boxId)}
+        <div class="lc-guidance">${g.summary}</div>
+        <div class="lc-actions-title">Recommended Actions</div>
+        <ul class="lc-actions-list">${g.actions.map(a=>`<li>${a}</li>`).join('')}</ul>
+      </div>`;
+  });
+}
+
+function buildSpotlight(id){
+  const active=BOXES.find(b=>b.id===id);
+  return`<div class="spotlight-wrap"><div class="spotlight-axis-y">Potential ↑</div><div class="spotlight-grid">${BOXES.map(b=>b.id===id?`<div class="sp-cell active-${active.color}">${b.title}</div>`:`<div class="sp-cell dimmed">${b.title}</div>`).join('')}</div><div class="spotlight-axis-x">Performance →</div></div>`;
+}
+
+function restart(){leaders=[];scores={};currentIdx=0;tier2Active=false;document.querySelectorAll('#leader-inputs input').forEach((i,n)=>{if(n>0)i.closest('.leader-row').remove();else i.value='';});document.getElementById('header-status').textContent='';showPhase('intro');}
+</script>
+</body>
+</html>
