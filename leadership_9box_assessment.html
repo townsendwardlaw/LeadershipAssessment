@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadership 9-Box Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f13;
+    --surface: #16181f;
+    --surface2: #1e2029;
+    --border: #2a2d38;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --text: #e8e9ee;
+    --muted: #7a7f96;
+    --green: #4caf82;
+    --yellow: #d4a843;
+    --red: #c0504d;
+    --accent: #5b8af5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+  .logo span { color: var(--muted); font-size: 0.85rem; font-family: 'DM Sans', sans-serif; display: block; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* PHASES */
+  #phase-intro, #phase-setup, #phase-questions, #phase-results { display: none; }
+  #phase-intro { display: block; }
+
+  /* INTRO */
+  .intro-container {
+    max-width: 760px;
+    margin: 80px auto;
+    padding: 0 40px;
+    text-align: center;
+  }
+  .intro-container h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .intro-container p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 560px;
+    margin: 0 auto 40px;
+  }
+  .grid-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    max-width: 420px;
+    margin: 0 auto 48px;
+  }
+  .gp-cell {
+    padding: 14px 10px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .gp-green { background: rgba(76,175,130,0.15); border: 1px solid rgba(76,175,130,0.4); color: var(--green); }
+  .gp-yellow { background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.4); color: var(--yellow); }
+  .gp-red { background: rgba(192,80,77,0.12); border: 1px solid rgba(192,80,77,0.4); color: var(--red); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), #a07820);
+    color: #0e0f13;
+    border: none;
+    padding: 16px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* SETUP */
+  .setup-container {
+    max-width: 640px;
+    margin: 60px auto;
+    padding: 0 40px;
+  }
+  .setup-container h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    margin-bottom: 8px;
+  }
+  .setup-container p { color: var(--muted); margin-bottom: 36px; }
+  .leader-inputs { display: flex; flex-direction: column; gap: 12px; }
+  .leader-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .leader-row input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+  }
+  .leader-row input:focus { outline: none; border-color: var(--gold); }
+  .leader-row input::placeholder { color: var(--muted); }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .setup-actions { margin-top: 32px; display: flex; gap: 12px; }
+  .btn-secondary {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); }
+
+  /* QUESTIONS */
+  .q-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  .q-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  .q-person {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .q-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #7a5010);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #0e0f13;
+    font-weight: 700;
+  }
+  .q-person-name { font-size: 1.15rem; font-weight: 600; }
+  .q-person-sub { font-size: 0.8rem; color: var(--muted); }
+  .q-progress { text-align: right; }
+  .q-progress-bar {
+    width: 200px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .q-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .q-progress-text { font-size: 0.8rem; color: var(--muted); }
+
+  .q-section {
+    margin-bottom: 40px;
+  }
+  .q-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .question-block {
+    margin-bottom: 28px;
+  }
+  .question-text {
+    font-size: 0.98rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .rating-row {
+    display: flex;
+    gap: 8px;
+  }
+  .rating-btn {
+    flex: 1;
+    padding: 10px 6px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  .rating-btn:hover { border-color: var(--gold); color: var(--text); }
+  .rating-btn.selected-1 { background: rgba(192,80,77,0.2); border-color: var(--red); color: #e08080; }
+  .rating-btn.selected-2 { background: rgba(192,80,77,0.1); border-color: #b07060; color: #c09080; }
+  .rating-btn.selected-3 { background: rgba(212,168,67,0.15); border-color: var(--yellow); color: var(--yellow); }
+  .rating-btn.selected-4 { background: rgba(76,175,130,0.1); border-color: #3a9070; color: #80c0a0; }
+  .rating-btn.selected-5 { background: rgba(76,175,130,0.2); border-color: var(--green); color: var(--green); }
+
+  .q-actions { display: flex; justify-content: space-between; margin-top: 10px; }
+
+  /* RESULTS */
+  .results-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  .results-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .results-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+  .results-header p { color: var(--muted); }
+
+  /* GRID */
+  .nine-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 50px;
+    position: relative;
+  }
+  .axis-label-y {
+    position: absolute;
+    left: -44px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .axis-label-x {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .nine-cell {
+    border-radius: 10px;
+    padding: 18px 16px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .cell-green { background: rgba(76,175,130,0.1); border: 1.5px solid rgba(76,175,130,0.4); }
+  .cell-yellow { background: rgba(212,168,67,0.08); border: 1.5px solid rgba(212,168,67,0.35); }
+  .cell-red { background: rgba(192,80,77,0.1); border: 1.5px solid rgba(192,80,77,0.4); }
+  .cell-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .cell-green .cell-title { color: var(--green); }
+  .cell-yellow .cell-title { color: var(--yellow); }
+  .cell-red .cell-title { color: var(--red); }
+  .cell-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.4; flex: 1; }
+  .cell-people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+  }
+  .person-chip {
+    background: rgba(201,168,76,0.2);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+
+  /* LEADER CARDS */
+  .leader-cards-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+  .leader-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+  .leader-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+  .leader-card:hover { border-color: var(--gold); }
+  .lc-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .lc-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0e0f13;
+    flex-shrink: 0;
+  }
+  .av-green { background: linear-gradient(135deg, var(--green), #2a7050); }
+  .av-yellow { background: linear-gradient(135deg, var(--yellow), #8a6010); }
+  .av-red { background: linear-gradient(135deg, #e07070, var(--red)); }
+  .lc-name { font-weight: 600; font-size: 1rem; }
+  .lc-box {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 2px;
+  }
+  .box-green { background: rgba(76,175,130,0.15); color: var(--green); border: 1px solid rgba(76,175,130,0.3); }
+  .box-yellow { background: rgba(212,168,67,0.12); color: var(--yellow); border: 1px solid rgba(212,168,67,0.3); }
+  .box-red { background: rgba(192,80,77,0.12); color: #e08080; border: 1px solid rgba(192,80,77,0.3); }
+
+  .lc-scores {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .lc-score-item { text-align: center; flex: 1; }
+  .lc-score-val { font-size: 1.6rem; font-weight: 700; font-family: 'Playfair Display', serif; }
+  .score-perf { color: var(--accent); }
+  .score-pot { color: var(--gold); }
+  .lc-score-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .lc-guidance {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .lc-actions-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .lc-actions-list {
+    list-style: none;
+    padding: 0;
+  }
+  .lc-actions-list li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .lc-actions-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.8rem;
+  }
+
+  /* SPOTLIGHT MINI-GRID */
+  .spotlight-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .spotlight-wrap {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 18px;
+  }
+  .spotlight-axis-y {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .spotlight-axis-x {
+    text-align: center;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .sp-cell {
+    border-radius: 5px;
+    padding: 7px 5px;
+    text-align: center;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+    transition: all 0.2s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sp-cell.dimmed {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.12);
+  }
+  .sp-cell.active-green {
+    background: rgba(76,175,130,0.25);
+    border: 2px solid var(--green);
+    color: var(--green);
+    box-shadow: 0 0 12px rgba(76,175,130,0.3);
+    font-size: 0.62rem;
+  }
+  .sp-cell.active-yellow {
+    background: rgba(212,168,67,0.2);
+    border: 2px solid var(--yellow);
+    color: var(--yellow);
+    box-shadow: 0 0 12px rgba(212,168,67,0.25);
+    font-size: 0.62rem;
+  }
+  .sp-cell.active-red {
+    background: rgba(192,80,77,0.2);
+    border: 2px solid var(--red);
+    color: #e08080;
+    box-shadow: 0 0 12px rgba(192,80,77,0.25);
+    font-size: 0.62rem;
+  }
+
+  /* PRINT */
+  .print-btn {
+    display: block;
+    margin: 0 auto 60px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 12px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  .print-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .restart-btn { display: block; text-align: center; background: none; border: none; color: var(--muted); font-size: 0.85rem; cursor: pointer; margin: 0 auto 40px; text-decoration: underline; }
+  .restart-btn:hover { color: var(--text); }
+
+  @media (max-width: 640px) {
+    header { padding: 20px; }
+    .intro-container, .setup-container, .q-container, .results-container { padding: 20px; margin: 20px auto; }
+    .intro-container h1 { font-size: 2rem; }
+    .leader-cards { grid-template-columns: 1fr; }
+    .nine-box { gap: 4px; }
+    .nine-cell { padding: 10px; min-height: 80px; }
+    .cell-title { font-size: 0.62rem; }
+    .cell-desc { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    Leadership Intelligence
+    <span>9-Box Assessment Tool</span>
+  </div>
+  <div style="font-size:0.8rem;color:var(--muted);">CEO Edition</div>
+</header>
+
+<!-- INTRO -->
+<div id="phase-intro">
+  <div class="intro-container">
+    <h1>Map Your Leadership Team</h1>
+    <p>A structured assessment based on the McKinsey 9-Box model — designed for CEOs who want clear, honest placement of their leadership team with actionable guidance for each person.</p>
+    <div class="grid-preview">
+      <div class="gp-cell gp-yellow">One to Watch</div>
+      <div class="gp-cell gp-green">Rising Star</div>
+      <div class="gp-cell gp-green">Next Gen Leader</div>
+      <div class="gp-cell gp-yellow">Dev. Needed</div>
+      <div class="gp-cell gp-green">Core Employee</div>
+      <div class="gp-cell gp-green">High Impact</div>
+      <div class="gp-cell gp-red">Time to Go</div>
+      <div class="gp-cell gp-yellow">Solid Contributor</div>
+      <div class="gp-cell gp-green">Subject Matter Expert</div>
+    </div>
+    <button class="btn-primary" onclick="showPhase('setup')">Begin Assessment →</button>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div id="phase-setup">
+  <div class="setup-container">
+    <h2>Who's on your leadership team?</h2>
+    <p>Enter the names of your direct reports or leadership team members. You'll assess each one individually.</p>
+    <div class="leader-inputs" id="leader-inputs">
+      <div class="leader-row">
+        <input type="text" placeholder="e.g. Sarah Chen – Chief Marketing Officer" />
+        <button class="btn-ghost" onclick="removeRow(this)">×</button>
+      </div>
+      <div class="leader-row">
+        <input type="text" placeholder="e.g. James Liu – VP of Engineering" />
+        <button class="btn-ghost" onclick="removeRow(this)">×</button>
+      </div>
+      <div class="leader-row">
+        <input type="text" placeholder="e.g. Maria Santos – CFO" />
+        <button class="btn-ghost" onclick="removeRow(this)">×</button>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <button class="btn-ghost" onclick="addRow()" style="font-size:0.88rem; padding:8px 16px;">+ Add another person</button>
+    </div>
+    <div class="setup-actions">
+      <button class="btn-primary" onclick="startAssessment()">Start Assessments →</button>
+      <button class="btn-secondary" onclick="showPhase('intro')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div id="phase-questions">
+  <div class="q-container">
+    <div class="q-header">
+      <div class="q-person">
+        <div class="q-avatar" id="q-avatar">JL</div>
+        <div>
+          <div class="q-person-name" id="q-name">James Liu</div>
+          <div class="q-person-sub" id="q-sub">Person 1 of 3</div>
+        </div>
+      </div>
+      <div class="q-progress">
+        <div class="q-progress-text" id="q-prog-text">Questions 1–8 of 16</div>
+        <div class="q-progress-bar"><div class="q-progress-fill" id="q-prog-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- PERFORMANCE SECTION -->
+    <div class="q-section" id="section-performance">
+      <div class="q-section-title">⬛ Performance — What they deliver today</div>
+
+      <div class="question-block">
+        <div class="question-text">1. How consistently does this person meet or exceed the goals and KPIs set for their role?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="p1" data-v="1" onclick="rate(this)">Rarely meets expectations</button>
+          <button class="rating-btn" data-q="p1" data-v="2" onclick="rate(this)">Inconsistently</button>
+          <button class="rating-btn" data-q="p1" data-v="3" onclick="rate(this)">Mostly meets</button>
+          <button class="rating-btn" data-q="p1" data-v="4" onclick="rate(this)">Consistently meets</button>
+          <button class="rating-btn" data-q="p1" data-v="5" onclick="rate(this)">Regularly exceeds</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">2. How would you rate the quality and reliability of this person's output and decisions?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="p2" data-v="1" onclick="rate(this)">Poor — frequent errors or misses</button>
+          <button class="rating-btn" data-q="p2" data-v="2" onclick="rate(this)">Inconsistent quality</button>
+          <button class="rating-btn" data-q="p2" data-v="3" onclick="rate(this)">Adequate and reliable</button>
+          <button class="rating-btn" data-q="p2" data-v="4" onclick="rate(this)">Strong and consistent</button>
+          <button class="rating-btn" data-q="p2" data-v="5" onclick="rate(this)">Exceptional — sets the bar</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">3. How effectively does this person execute against the company's strategic priorities — not just their own function?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="p3" data-v="1" onclick="rate(this)">Operates in isolation</button>
+          <button class="rating-btn" data-q="p3" data-v="2" onclick="rate(this)">Occasional alignment</button>
+          <button class="rating-btn" data-q="p3" data-v="3" onclick="rate(this)">Generally aligned</button>
+          <button class="rating-btn" data-q="p3" data-v="4" onclick="rate(this)">Actively contributes</button>
+          <button class="rating-btn" data-q="p3" data-v="5" onclick="rate(this)">Drives company priorities</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">4. How would you describe this person's impact on the overall team and culture — do they raise the bar or create drag?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="p4" data-v="1" onclick="rate(this)">Creates drag / toxic</button>
+          <button class="rating-btn" data-q="p4" data-v="2" onclick="rate(this)">Neutral or slightly negative</button>
+          <button class="rating-btn" data-q="p4" data-v="3" onclick="rate(this)">Positive but modest</button>
+          <button class="rating-btn" data-q="p4" data-v="4" onclick="rate(this)">Lifts the team noticeably</button>
+          <button class="rating-btn" data-q="p4" data-v="5" onclick="rate(this)">Multiplies performance of others</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POTENTIAL SECTION -->
+    <div class="q-section" id="section-potential">
+      <div class="q-section-title">◆ Potential — Their capacity to grow and lead</div>
+
+      <div class="question-block">
+        <div class="question-text">5. How quickly does this person learn, adapt, and apply new skills or knowledge — especially under pressure?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="pot1" data-v="1" onclick="rate(this)">Resists change / slow to adapt</button>
+          <button class="rating-btn" data-q="pot1" data-v="2" onclick="rate(this)">Adapts slowly with support</button>
+          <button class="rating-btn" data-q="pot1" data-v="3" onclick="rate(this)">Reasonable learning pace</button>
+          <button class="rating-btn" data-q="pot1" data-v="4" onclick="rate(this)">Fast learner, self-directed</button>
+          <button class="rating-btn" data-q="pot1" data-v="5" onclick="rate(this)">Exceptional agility — thrives in ambiguity</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">6. How well does this person respond to critical feedback? Do they act on it, dismiss it, or get defensive?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="pot2" data-v="1" onclick="rate(this)">Defensive / dismissive</button>
+          <button class="rating-btn" data-q="pot2" data-v="2" onclick="rate(this)">Accepts but rarely acts</button>
+          <button class="rating-btn" data-q="pot2" data-v="3" onclick="rate(this)">Acts on clear feedback</button>
+          <button class="rating-btn" data-q="pot2" data-v="4" onclick="rate(this)">Actively seeks feedback</button>
+          <button class="rating-btn" data-q="pot2" data-v="5" onclick="rate(this)">Transforms from feedback rapidly</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">7. Does this person think and communicate at a strategic level — beyond their own function and role?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="pot3" data-v="1" onclick="rate(this)">Purely tactical / siloed</button>
+          <button class="rating-btn" data-q="pot3" data-v="2" onclick="rate(this)">Occasional strategic thinking</button>
+          <button class="rating-btn" data-q="pot3" data-v="3" onclick="rate(this)">Solid cross-functional view</button>
+          <button class="rating-btn" data-q="pot3" data-v="4" onclick="rate(this)">Thinks like an executive</button>
+          <button class="rating-btn" data-q="pot3" data-v="5" onclick="rate(this)">Influences company direction</button>
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-text">8. If this role became significantly more complex or senior, how ready do you believe this person is to step into it?</div>
+        <div class="rating-row">
+          <button class="rating-btn" data-q="pot4" data-v="1" onclick="rate(this)">Not ready — ceiling reached</button>
+          <button class="rating-btn" data-q="pot4" data-v="2" onclick="rate(this)">3+ years of development needed</button>
+          <button class="rating-btn" data-q="pot4" data-v="3" onclick="rate(this)">Ready in 12–24 months</button>
+          <button class="rating-btn" data-q="pot4" data-v="4" onclick="rate(this)">Ready in 6–12 months</button>
+          <button class="rating-btn" data-q="pot4" data-v="5" onclick="rate(this)">Ready now or already operating above level</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-actions">
+      <button class="btn-secondary" id="q-back-btn" onclick="prevPerson()">← Previous Person</button>
+      <button class="btn-primary" id="q-next-btn" onclick="nextPerson()">Next Person →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="phase-results">
+  <div class="results-container">
+    <div class="results-header">
+      <h2>Leadership Team Assessment</h2>
+      <p>Based on your responses — placement, guidance, and recommended actions for each leader</p>
+    </div>
+
+    <div style="position:relative; padding-left:60px;">
+      <div class="axis-label-y">Potential ↑</div>
+      <div class="nine-box" id="nine-box-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="axis-label-x">Performance →</div>
+    </div>
+
+    <div style="height:50px;"></div>
+    <div class="leader-cards-title">Individual Profiles & Guidance</div>
+    <div class="leader-cards" id="leader-cards"></div>
+
+    <button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+    <button class="restart-btn" onclick="restart()">Start a new assessment</button>
+  </div>
+</div>
+
+<script>
+const BOXES = [
+  // Row 0 = High Potential (top row, left to right = low to high performance)
+  { id: 'one-to-watch',   title: 'One to Watch',         desc: 'High investment value for the medium term — needs time to develop performance',  color: 'yellow', row: 0, col: 0 },
+  { id: 'rising-star',    title: 'Rising Star',           desc: 'Consistent performer with capability to develop and improve at a fast pace',       color: 'green',  row: 0, col: 1 },
+  { id: 'next-gen',       title: 'Next Gen Leader',       desc: 'Role model employee — can take on new challenges to deliver exceptional value',    color: 'green',  row: 0, col: 2 },
+  // Row 1 = Medium Potential
+  { id: 'dev-needed',     title: 'Development Needed',    desc: 'Performance not where it needs to be but potentially coachable/developable',       color: 'yellow', row: 1, col: 0 },
+  { id: 'core-employee',  title: 'Core Employee',         desc: 'Consistent performer with capability to deliver higher performance and continued growth', color: 'green', row: 1, col: 1 },
+  { id: 'high-impact',    title: 'High Impact',           desc: 'Excellent performance attributes with the ability to be stretched further',        color: 'green',  row: 1, col: 2 },
+  // Row 2 = Low Potential (bottom row)
+  { id: 'time-to-go',     title: 'Time to Go',            desc: 'Low performance and limited growth potential — action required',                   color: 'red',    row: 2, col: 0 },
+  { id: 'solid-contrib',  title: 'Solid Contributor',     desc: 'Solid performer with little growth potential — adds adequate value for now',       color: 'yellow', row: 2, col: 1 },
+  { id: 'sme',            title: 'Subject Matter Expert', desc: 'High value deliverer but with little growth potential',                            color: 'green',  row: 2, col: 2 },
+];
+
+const GUIDANCE = {
+  'next-gen':      {
+    summary: 'Your highest-value leadership asset. This person is operating at or above their level and is a critical retention priority.',
+    actions: ['Assign to the most strategic, high-stakes projects immediately', 'Build a personalized succession plan — they are your future senior leadership', 'Check in frequently: high performers leave when under-challenged', 'Consider expanding scope or title to signal recognition', 'Introduce to board/investors and external networks']
+  },
+  'rising-star':   {
+    summary: 'A standout with a clear trajectory. High potential that is already being unlocked — invest here for outsized returns.',
+    actions: ['Accelerate their development with stretch assignments', 'Pair with a senior mentor or executive coach', 'Expose them to cross-functional leadership opportunities', 'Create a 12-month development roadmap together', 'Protect them from being buried in day-to-day operations']
+  },
+  'high-impact':   {
+    summary: 'Delivers excellently today. The question is how far they can go — the ceiling may be higher than it appears.',
+    actions: ['Test them with one significant stretch challenge outside their comfort zone', 'Provide coaching to develop strategic thinking skills', 'Increase visibility across the senior team', 'Explore whether a bigger scope could unlock higher potential', 'Retain carefully — they are attractive to competitors']
+  },
+  'one-to-watch':  {
+    summary: 'High potential that has not yet translated into performance. With the right conditions and time, this could be a future star.',
+    actions: ['Identify and remove obstacles to performance — is it role fit, resources, or clarity?', 'Set very clear short-term performance milestones with support', 'Coach actively — do not leave them to sink or swim', 'Revisit placement in 6 months; if no movement, reconsider', 'Consider whether they are in the wrong role rather than the wrong company']
+  },
+  'core-employee': {
+    summary: 'Your organizational backbone. Reliable and capable — the kind of steady performer every leadership team needs.',
+    actions: ['Ensure they feel valued and not overlooked in favor of "stars"', 'Offer meaningful development without forcing them into roles they do not want', 'Use them as stabilizers during periods of rapid change', 'Recognize contributions publicly and regularly', 'Explore whether there is untapped potential by giving them one stretch project']
+  },
+  'dev-needed':    {
+    summary: 'There is coachable potential here, but performance must improve. This person requires active support and clear direction.',
+    actions: ['Initiate a formal, structured development conversation immediately', 'Set 90-day performance milestones that are measurable and achievable', 'Assign an internal mentor or external coach', 'Identify whether performance issues are skill, will, or circumstance', 'If no progress in 3–6 months, transition to a different role or exit plan']
+  },
+  'solid-contrib': {
+    summary: 'Gets the job done reliably. Valuable now but unlikely to grow into senior leadership. Manage accordingly.',
+    actions: ['Be honest with yourself about the ceiling — avoid over-investing development resources here', 'Keep them motivated and engaged in their current role', 'Use their stability as a foundation for others to perform', 'Avoid promoting into roles beyond their capacity', 'Plan for succession — their role needs a future pipeline even if they do not']
+  },
+  'sme':           {
+    summary: 'Deep expertise with real current value — but growth potential in leadership is limited. Maximize their contribution where they are.',
+    actions: ['Leverage their expertise as an internal resource and knowledge-sharer', 'Create specialist tracks that reward depth over breadth', 'Do not force them into management if it is not their strength', 'Retain by recognizing technical excellence, not just leadership titles', 'Succession plan for their domain — when they leave, institutional knowledge goes with them']
+  },
+  'time-to-go':    {
+    summary: 'This is a difficult but necessary conversation. Low performance and low potential is a clear signal to act — inaction is costly to the team.',
+    actions: ['Have a direct, private, compassionate conversation about your observations', 'Offer one structured opportunity to improve with clear metrics and timeline', 'Do not allow the situation to fester — it signals to the team that underperformance is tolerated', 'If no material improvement, begin a respectful transition process', 'Examine hiring and onboarding: how did this mismatch occur?']
+  }
+};
+
+let leaders = [];
+let scores = {}; // { name: { p1,p2,p3,p4,pot1,pot2,pot3,pot4 } }
+let currentIdx = 0;
+
+function showPhase(p) {
+  ['intro','setup','questions','results'].forEach(id => {
+    document.getElementById('phase-'+id).style.display = (id === p) ? 'block' : 'none';
+  });
+}
+
+function addRow() {
+  const cont = document.getElementById('leader-inputs');
+  const row = document.createElement('div');
+  row.className = 'leader-row';
+  row.innerHTML = `<input type="text" placeholder="Name – Title" /><button class="btn-ghost" onclick="removeRow(this)">×</button>`;
+  cont.appendChild(row);
+}
+
+function removeRow(btn) {
+  const rows = document.querySelectorAll('.leader-row');
+  if (rows.length > 1) btn.closest('.leader-row').remove();
+}
+
+function startAssessment() {
+  const inputs = document.querySelectorAll('#leader-inputs input');
+  leaders = [];
+  inputs.forEach(inp => { if (inp.value.trim()) leaders.push(inp.value.trim()); });
+  if (!leaders.length) { alert('Please enter at least one person.'); return; }
+  leaders.forEach(l => { scores[l] = {}; });
+  currentIdx = 0;
+  loadQuestion(0);
+  showPhase('questions');
+}
+
+function loadQuestion(idx) {
+  const name = leaders[idx];
+  const initials = name.split(/[\s–-]+/).filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('q-avatar').textContent = initials;
+  document.getElementById('q-name').textContent = name;
+  document.getElementById('q-sub').textContent = `Person ${idx+1} of ${leaders.length}`;
+  document.getElementById('q-prog-text').textContent = `Person ${idx+1} of ${leaders.length}`;
+  document.getElementById('q-prog-fill').style.width = `${((idx) / leaders.length) * 100}%`;
+
+  // Restore previous ratings
+  document.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.className = 'rating-btn';
+    const q = btn.dataset.q;
+    const v = parseInt(btn.dataset.v);
+    if (scores[name] && scores[name][q] === v) {
+      btn.classList.add(`selected-${v}`);
+    }
+  });
+
+  document.getElementById('q-back-btn').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  document.getElementById('q-next-btn').textContent = idx === leaders.length - 1 ? 'See Results →' : 'Next Person →';
+}
+
+function rate(btn) {
+  const q = btn.dataset.q;
+  const v = parseInt(btn.dataset.v);
+  const name = leaders[currentIdx];
+  scores[name][q] = v;
+  // deselect siblings
+  document.querySelectorAll(`.rating-btn[data-q="${q}"]`).forEach(b => {
+    b.className = 'rating-btn';
+  });
+  btn.classList.add(`selected-${v}`);
+}
+
+function getScore(name) {
+  const s = scores[name];
+  const perfKeys = ['p1','p2','p3','p4'];
+  const potKeys = ['pot1','pot2','pot3','pot4'];
+  const perf = perfKeys.reduce((sum, k) => sum + (s[k] || 0), 0) / perfKeys.length;
+  const pot = potKeys.reduce((sum, k) => sum + (s[k] || 0), 0) / potKeys.length;
+  return { perf: Math.round(perf * 10) / 10, pot: Math.round(pot * 10) / 10 };
+}
+
+function classify(perf, pot) {
+  const pc = perf <= 2.5 ? 0 : perf <= 3.8 ? 1 : 2;
+  const potc = pot <= 2.5 ? 2 : pot <= 3.8 ? 1 : 0; // row: 0=high, 2=low
+  const box = BOXES.find(b => b.row === potc && b.col === pc);
+  return box ? box.id : 'core-employee';
+}
+
+function nextPerson() {
+  const name = leaders[currentIdx];
+  const qs = ['p1','p2','p3','p4','pot1','pot2','pot3','pot4'];
+  const missing = qs.filter(q => !scores[name][q]);
+  if (missing.length > 0) {
+    alert(`Please answer all 8 questions for ${name} before continuing.`);
+    return;
+  }
+  if (currentIdx < leaders.length - 1) {
+    currentIdx++;
+    loadQuestion(currentIdx);
+  } else {
+    showResults();
+  }
+}
+
+function prevPerson() {
+  if (currentIdx > 0) { currentIdx--; loadQuestion(currentIdx); }
+}
+
+function showResults() {
+  showPhase('results');
+
+  // Build 9-box grid
+  const grid = document.getElementById('nine-box-grid');
+  grid.innerHTML = '';
+  const cellPeople = {};
+  BOXES.forEach(b => cellPeople[b.id] = []);
+
+  leaders.forEach(name => {
+    const { perf, pot } = getScore(name);
+    const boxId = classify(perf, pot);
+    cellPeople[boxId].push(name);
+  });
+
+  // Grid order: top-left to bottom-right (row 0 col 0, row 0 col 1, row 0 col 2, row 1 ...)
+  BOXES.forEach(b => {
+    const cell = document.createElement('div');
+    cell.className = `nine-cell cell-${b.color}`;
+    const ppl = cellPeople[b.id].map(n => `<span class="person-chip">${n.split(/[\s–-]/)[0]}</span>`).join('');
+    cell.innerHTML = `<div class="cell-title">${b.title}</div><div class="cell-desc">${b.desc}</div><div class="cell-people">${ppl}</div>`;
+    grid.appendChild(cell);
+  });
+
+  // Build leader cards
+  const cards = document.getElementById('leader-cards');
+  cards.innerHTML = '';
+  leaders.forEach(name => {
+    const { perf, pot } = getScore(name);
+    const boxId = classify(perf, pot);
+    const box = BOXES.find(b => b.id === boxId);
+    const guidance = GUIDANCE[boxId];
+    const initials = name.split(/[\s–-]+/).filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0,2);
+    const avClass = box.color === 'green' ? 'av-green' : box.color === 'yellow' ? 'av-yellow' : 'av-red';
+    const boxClass = box.color === 'green' ? 'box-green' : box.color === 'yellow' ? 'box-yellow' : 'box-red';
+
+    const actions = guidance.actions.map(a => `<li>${a}</li>`).join('');
+    cards.innerHTML += `
+      <div class="leader-card">
+        <div class="lc-top">
+          <div class="lc-avatar ${avClass}">${initials}</div>
+          <div>
+            <div class="lc-name">${name}</div>
+            <span class="lc-box ${boxClass}">${box.title}</span>
+          </div>
+        </div>
+        <div class="lc-scores">
+          <div class="lc-score-item">
+            <div class="lc-score-val score-perf">${perf}</div>
+            <div class="lc-score-label">Performance</div>
+          </div>
+          <div class="lc-score-item">
+            <div class="lc-score-val score-pot">${pot}</div>
+            <div class="lc-score-label">Potential</div>
+          </div>
+          <div class="lc-score-item">
+            <div class="lc-score-val" style="color:var(--text);font-size:1.1rem;margin-top:4px;">${box.title}</div>
+            <div class="lc-score-label">Category</div>
+          </div>
+        </div>
+        ${buildSpotlightGrid(boxId)}
+        <div class="lc-guidance">${guidance.summary}</div>
+        <div class="lc-actions-title">Recommended Actions</div>
+        <ul class="lc-actions-list">${actions}</ul>
+      </div>`;
+  });
+}
+
+function buildSpotlightGrid(activeBoxId) {
+  const activeBox = BOXES.find(b => b.id === activeBoxId);
+  let cells = '';
+  BOXES.forEach(b => {
+    if (b.id === activeBoxId) {
+      cells += `<div class="sp-cell active-${activeBox.color}">${b.title}</div>`;
+    } else {
+      cells += `<div class="sp-cell dimmed">${b.title}</div>`;
+    }
+  });
+  return `
+    <div class="spotlight-wrap">
+      <div class="spotlight-axis-y">Potential ↑</div>
+      <div class="spotlight-grid">${cells}</div>
+      <div class="spotlight-axis-x">Performance →</div>
+    </div>`;
+}
+
+function restart() {
+  leaders = [];
+  scores = {};
+  currentIdx = 0;
+  document.querySelectorAll('#leader-inputs input').forEach((inp, i) => { if (i > 0) inp.closest('.leader-row').remove(); else inp.value = ''; });
+  showPhase('intro');
+}
+</script>
+</body>
+</html>
